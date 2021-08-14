@@ -1,3 +1,4 @@
+// Normal popup UI
 function mountPopup() {
   /* Button for re-opening entire incognito window */
   const reopenWindowBtn = document.createElement("button");
@@ -34,9 +35,52 @@ function mountPopup() {
     }
   };
 
+  /* Button for re-opening selected tabs only */
+  const reopenSelectedBtn = document.createElement("button");
+  reopenSelectedBtn.innerHTML =
+    "Re-Open <b>selected tabs only</b> in normal window";
+  reopenSelectedBtn.style = "background-color: rgb(253, 222, 227)";
+  reopenSelectedBtn.onclick = async function () {
+    // Get current window to check if it is a incognito window
+    const { incognito } = await chrome.windows.getCurrent();
+
+    // Only reopen the tabs in new window if the current window is a incognito window
+    if (incognito) {
+      const tabs = await chrome.tabs.query({
+        // Instead of currentWindow, windowId can be used too, but this just simplifies the readability of the API usage
+        currentWindow: true,
+
+        // Only get the tabs that are selected by user
+        highlighted: true,
+      });
+
+      // Extract out only the URLs of the tab(s) array
+      const tabURLs = tabs.map((tab) => tab.url);
+
+      // Await for new window to be created first before closing the incognito window
+      await chrome.windows.create({
+        // Opens a normal active window
+        focused: true,
+        type: "normal",
+
+        // Open in a normal window
+        incognito: false,
+
+        // Have to use URL instead of tab IDs because tabs can only be moved between windows of the same profile
+        // i.e incognito tabs can only be moved to another incognito window
+        url: tabURLs,
+      });
+
+      // Only close the selected tabs once the new window is created
+      await chrome.tabs.remove(tabs.map((tab) => tab.id));
+    }
+  };
+
   document.body.appendChild(reopenWindowBtn);
+  document.body.appendChild(reopenSelectedBtn);
 }
 
+// Error popup UI
 function mountErrorPopup() {
   const noAccessError = document.createElement("h2");
   noAccessError.innerHTML =
