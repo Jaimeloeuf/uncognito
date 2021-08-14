@@ -10,7 +10,10 @@
 </head>
 
 <body>
-  <button>Reopen current window in normal window</button>
+  <!-- Error that will only show if extension does not have incognito access -->
+  <h2 id="no-incognito-access-error" style="color: red"></h2>
+
+  <button id="reopen">Reopen current window in normal window</button>
 
   <script src="popup.js"></script>
 </body>

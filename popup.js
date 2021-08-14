@@ -1,24 +1,9 @@
-// Initialize butotn with users's prefered color
-let changeColor = document.getElementById("changeColor");
+// Check if extension have access to incognito windows/tabs
+chrome.extension.isAllowedIncognitoAccess((isAllowed) => {
+  // Get error element and add error message to it if incognito access is not given to extension
+  if (!isAllowed)
+    document.getElementById("no-incognito-access-error").innerHTML =
+      "Please enable incognito access to use extension. <a href='chrome://extensions'>chrome://extensions</a>";
 
-chrome.storage.sync.get("color", ({ color }) => {
-  changeColor.style.backgroundColor = color;
+  // Make a button that is clickable to use chrome.tabs to open a new tab to chrome://extensions instead of the link
 });
-
-// When the button is clicked, inject setPageBackgroundColor into current page
-changeColor.addEventListener("click", async () => {
-  let [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
-
-  chrome.scripting.executeScript({
-    target: { tabId: tab.id },
-    function: setPageBackgroundColor,
-  });
-});
-
-// The body of this function will be execuetd as a content script inside the
-// current page
-function setPageBackgroundColor() {
-  chrome.storage.sync.get("color", ({ color }) => {
-    document.body.style.backgroundColor = color;
-  });
-}
