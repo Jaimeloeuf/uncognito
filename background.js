@@ -11,9 +11,9 @@ chrome.contextMenus.create({
 });
 
 chrome.contextMenus.onClicked.addListener(async function (info, tab) {
-  if (tab.incognito) {
-    const tabUrl = tab.url || tab.pendingUrl;
+  const { id, incognito } = tab;
 
+  if (incognito) {
     // Await for window to be created before closing the incognito tab
     await chrome.windows.create({
       // opens a normal active window
@@ -23,11 +23,13 @@ chrome.contextMenus.onClicked.addListener(async function (info, tab) {
       // Open in a normal window
       incognito: false,
 
-      // tabId: tab.id,
-
-      url: [tabUrl],
+      // Have to use URL instead of tab IDs because tabs can only be moved between windows of the same profile
+      // i.e incognito tabs can only be moved to another incognito window
+      // The tab URL is either the tab current URL or if none, then use the pending URL
+      url: tab.url || tab.pendingUrl,
     });
 
-    await chrome.tabs.remove(tab.id);
+    // Close incognito tab once tab is opened new window
+    await chrome.tabs.remove(id);
   }
 });
