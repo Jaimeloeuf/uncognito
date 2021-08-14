@@ -5,16 +5,17 @@ chrome.runtime.onInstalled.addListener((installationObject) => {
 });
 
 chrome.contextMenus.create({
-  title: "Uncognito this tab",
+  title: "Open this (incognito) tab in a normal window",
   contexts: [chrome.contextMenus.ContextType.ALL],
   id: "context",
 });
 
-chrome.contextMenus.onClicked.addListener(function (info, tab) {
+chrome.contextMenus.onClicked.addListener(async function (info, tab) {
   if (tab.incognito) {
     const tabUrl = tab.url || tab.pendingUrl;
 
-    chrome.windows.create({
+    // Await for window to be created before closing the incognito tab
+    await chrome.windows.create({
       // opens a normal active window
       focused: true,
       type: "normal",
@@ -26,5 +27,7 @@ chrome.contextMenus.onClicked.addListener(function (info, tab) {
 
       url: [tabUrl],
     });
+
+    await chrome.tabs.remove(tab.id);
   }
 });
