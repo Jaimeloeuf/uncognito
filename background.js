@@ -16,7 +16,7 @@ chrome.contextMenus.onClicked.addListener(async function (info, tab) {
   if (incognito) {
     // Await for window to be created before closing the incognito tab
     await chrome.windows.create({
-      // opens a normal active window
+      // Opens a normal active window
       focused: true,
       type: "normal",
 
