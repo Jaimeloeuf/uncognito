@@ -8,10 +8,10 @@ chrome.extension.isAllowedIncognitoAccess((isAllowed) => {
   // Make a button that is clickable to use chrome.tabs to open a new tab to chrome://extensions instead of the link
 });
 
-const btn = document.getElementById("reopen");
+const reopenWindowBtn = document.getElementById("reopen-window");
 
 // When the button is clicked, inject setPageBackgroundColor into current page
-btn.addEventListener("click", async () => {
+reopenWindowBtn.onclick = async function () {
   // Get current window to check if it is a incognito window
   const { id, incognito } = await chrome.windows.getCurrent();
 
@@ -42,4 +42,4 @@ btn.addEventListener("click", async () => {
     // Close the entire incognito window and all tabs in it once the new window is created
     await chrome.windows.remove(id);
   }
-});
+};
