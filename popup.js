@@ -1,11 +1,36 @@
 // Check if extension have access to incognito windows/tabs
 chrome.extension.isAllowedIncognitoAccess((isAllowed) => {
-  // Get error element and add error message to it if incognito access is not given to extension
-  if (!isAllowed)
-    document.getElementById("no-incognito-access-error").innerHTML =
-      "Please enable incognito access to use extension. <a href='chrome://extensions'>chrome://extensions</a>";
+  if (isAllowed) {
+    // document.body.appendChild();
+  } else {
+    const noAccessError = document.createElement("h2");
+    noAccessError.innerHTML =
+      "Please enable incognito access to use extension in extension's settings page";
+    noAccessError.style = "color: rgb(255, 90, 90)";
 
-  // Make a button that is clickable to use chrome.tabs to open a new tab to chrome://extensions instead of the link
+    const buttonToExtensionsPage = document.createElement("button");
+    buttonToExtensionsPage.innerHTML = "Extension's settings";
+    buttonToExtensionsPage.style = "background-color: rgb(253, 222, 227);";
+    buttonToExtensionsPage.onclick = function () {
+      chrome.tabs.create({
+        // Create tab and focus on it
+        active: true,
+
+        // From chrome extension root URL to chrome extension settings page
+        // chrome-extension://aeghlmlmidbengggkhfocdkdhejpmfjh/
+        // chrome://extensions/?id=aeghlmlmidbengggkhfocdkdhejpmfjh
+        url:
+          "chrome://extensions/?id=" +
+          chrome.runtime
+            .getURL("")
+            .replace("chrome-extension://", "")
+            .replace("/", ""),
+      });
+    };
+
+    document.body.appendChild(noAccessError);
+    document.body.appendChild(buttonToExtensionsPage);
+  }
 });
 
 const reopenWindowBtn = document.getElementById("reopen-window");

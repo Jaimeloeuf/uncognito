@@ -31,19 +31,18 @@
 
       /* Popup font size are always smaller, for reference 16px is the default font size*/
       font-size: 20px;
+
+      cursor: pointer;
     }
   </style>
 </head>
 
 <body>
-  <!-- Error that will only show if extension does not have incognito access -->
-  <h2 id="no-incognito-access-error" style="color: rgb(255, 90, 90)"></h2>
-
   <!-- @todo Remove the buttons if extension cannot be used in incognito window -->
-  <button id="reopen-window" style="background-color: rgb(220, 220, 220);">Re-Open <b>current window</b> in normal
+  <button id="reopen-window" style="background-color: rgb(220, 220, 220)">Re-Open <b>current window</b> in normal
     window</button>
 
-  <button id="reopen-selected" style="background-color:rgb(253, 222, 227);">Re-Open <b>selected tabs only</b> in normal
+  <button id="reopen-selected" style="background-color: rgb(253, 222, 227)">Re-Open <b>selected tabs only</b> in normal
     window</button>
 
   <script src="popup.js"></script>
