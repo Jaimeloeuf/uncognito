@@ -1,12 +1,12 @@
 {
   "name": "Uncognito",
   "description": "Open incognito tabs in a normal browser window",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "manifest_version": 3,
   "background": {
     "service_worker": "background.js"
   },
-  "permissions": ["activeTab", "tabs", "storage", "contextMenus", "scripting"],
+  "permissions": ["tabs", "contextMenus"],
   "action": {
     "default_popup": "popup.html",
     "default_icon": {

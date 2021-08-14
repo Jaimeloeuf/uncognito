@@ -1,5 +1,15 @@
-// Normal popup UI
-function mountPopup() {
+// Normal popup UI when current window is NOT a incognito window
+function mountNotIncognitoPopup() {
+  const notIncognitoWindowNotice = document.createElement("h2");
+  notIncognitoWindowNotice.innerHTML =
+    "Uncognito extension only works in incognito mode. The current window is <b>NOT</b> in incognito mode.";
+  notIncognitoWindowNotice.style = "color: rgb(255, 84, 84)";
+
+  document.body.appendChild(notIncognitoWindowNotice);
+}
+
+// Normal popup UI when current window is a incognito window
+function mountIncognitoPopup() {
   /* Button for re-opening entire incognito window */
   const reopenWindowBtn = document.createElement("button");
   reopenWindowBtn.innerHTML = "Re-Open <b>current window</b> in normal window";
@@ -112,7 +122,15 @@ function mountErrorPopup() {
 }
 
 // Check if extension have access to incognito windows/tabs and mount a specific popup UI
-chrome.extension.isAllowedIncognitoAccess((isAllowed) => {
-  if (isAllowed) mountPopup();
-  else mountErrorPopup();
+chrome.extension.isAllowedIncognitoAccess(async (isAllowed) => {
+  if (isAllowed) {
+    // Get current window to check if it is a incognito window
+    const { incognito } = await chrome.windows.getCurrent();
+
+    // Mount different UIs depending on whether current window is incognito or not
+    if (incognito) mountIncognitoPopup();
+    else mountNotIncognitoPopup();
+  } else {
+    mountErrorPopup();
+  }
 });
