@@ -5,9 +5,8 @@ chrome.runtime.onInstalled.addListener((installationObject) => {
 });
 
 chrome.contextMenus.create({
+  id: "context-menu",
   title: "Open this (incognito) tab in a normal window",
-  contexts: [chrome.contextMenus.ContextType.ALL],
-  id: "context",
 });
 
 chrome.contextMenus.onClicked.addListener(async function (info, tab) {
