@@ -8,8 +8,8 @@ function mountNotIncognitoPopup() {
   document.body.appendChild(notIncognitoWindowNotice);
 }
 
-// Normal popup UI when current window is a incognito window
-function mountIncognitoPopup() {
+// Function to create and return HTML Div element of the `link reopening section`
+function reopenIncognitoTabsDiv() {
   /* Button for re-opening entire incognito window */
   const reopenWindowBtn = document.createElement("button");
   reopenWindowBtn.innerHTML = "<b>All tabs</b> in current window";
@@ -85,6 +85,18 @@ function mountIncognitoPopup() {
     }
   };
 
+  /* Div to group the buttons for reopening tabs */
+  const div = document.createElement("div");
+  div.innerHTML = `<h1 style="margin-bottom: 0em;">Re-Open tabs in normal window</h1>`;
+  div.appendChild(reopenWindowBtn);
+  div.appendChild(reopenSelectedBtn);
+  div.innerHTML += `<hr />`;
+
+  return div;
+}
+
+// Function to create and return HTML Div element of the `link manipulation section`
+function linksManipulationDiv() {
   /* Button to copy links of all tabs in window */
   const copyAllLinksBtn = document.createElement("button");
   copyAllLinksBtn.innerHTML =
@@ -130,26 +142,18 @@ function mountIncognitoPopup() {
     });
   };
 
-  /* Div to group the buttons for reopening tabs */
-  const reopenTabsDiv = document.createElement("div");
-  reopenTabsDiv.innerHTML = `<h1 style="margin-bottom: 0em;">Re-Open tabs in normal window</h1>`;
-  reopenTabsDiv.appendChild(reopenWindowBtn);
-  reopenTabsDiv.appendChild(reopenSelectedBtn);
-  reopenTabsDiv.innerHTML += `<hr />`;
-
   /* Div to group the buttons for tab links */
-  const linksAsTextDiv = document.createElement("div");
-  linksAsTextDiv.innerHTML = `<h1 style="margin-bottom: 0em;">Manipulating tab URLs</h1>`;
-  linksAsTextDiv.appendChild(copyAllLinksBtn);
-  linksAsTextDiv.appendChild(reopenLinksInput);
-  linksAsTextDiv.appendChild(reopenLinksBtn);
+  const div = document.createElement("div");
+  div.innerHTML = `<h1 style="margin-bottom: 0em;">Manipulating tab URLs</h1>`;
+  div.appendChild(copyAllLinksBtn);
+  div.appendChild(reopenLinksInput);
+  div.appendChild(reopenLinksBtn);
 
-  document.body.appendChild(reopenTabsDiv);
-  document.body.appendChild(linksAsTextDiv);
+  return div;
 }
 
 // Error popup UI
-function mountErrorPopup() {
+function errorPopup() {
   const noAccessError = document.createElement("h2");
   noAccessError.innerHTML =
     "Please enable incognito access to use extension in extension's settings page";
@@ -175,8 +179,12 @@ function mountErrorPopup() {
     });
   };
 
-  document.body.appendChild(noAccessError);
-  document.body.appendChild(buttonToExtensionsPage);
+  /* Div to group everything together to return as a single element */
+  const div = document.createElement("div");
+  div.appendChild(noAccessError);
+  div.appendChild(buttonToExtensionsPage);
+
+  return div;
 }
 
 // Check if extension have access to incognito windows/tabs and mount a specific popup UI
@@ -185,10 +193,9 @@ chrome.extension.isAllowedIncognitoAccess(async (isAllowed) => {
     // Get current window to check if it is a incognito window
     const { incognito } = await chrome.windows.getCurrent();
 
-    // Mount different UIs depending on whether current window is incognito or not
-    if (incognito) mountIncognitoPopup();
-    else mountNotIncognitoPopup();
+    document.body.appendChild(reopenIncognitoTabsDiv());
+    document.body.appendChild(linksManipulationDiv());
   } else {
-    mountErrorPopup();
+    document.body.appendChild(errorPopup());
   }
 });
