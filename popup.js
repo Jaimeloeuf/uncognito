@@ -12,7 +12,7 @@ function mountNotIncognitoPopup() {
 function mountIncognitoPopup() {
   /* Button for re-opening entire incognito window */
   const reopenWindowBtn = document.createElement("button");
-  reopenWindowBtn.innerHTML = "Re-Open <b>current window</b> in normal window";
+  reopenWindowBtn.innerHTML = "<b>All tabs</b> in current window";
   reopenWindowBtn.style = "background-color: rgb(220, 220, 220)";
   reopenWindowBtn.onclick = async function () {
     // Get current window to check if it is a incognito window
@@ -47,8 +47,7 @@ function mountIncognitoPopup() {
 
   /* Button for re-opening selected tabs only */
   const reopenSelectedBtn = document.createElement("button");
-  reopenSelectedBtn.innerHTML =
-    "Re-Open <b>selected tabs only</b> in normal window";
+  reopenSelectedBtn.innerHTML = "<b>Selected</b> tabs only";
   reopenSelectedBtn.style = "background-color: rgb(253, 222, 227)";
   reopenSelectedBtn.onclick = async function () {
     // Get current window to check if it is a incognito window
@@ -86,8 +85,14 @@ function mountIncognitoPopup() {
     }
   };
 
-  document.body.appendChild(reopenWindowBtn);
-  document.body.appendChild(reopenSelectedBtn);
+  /* Div to group the buttons for reopening tabs */
+  const reopenTabsDiv = document.createElement("div");
+  reopenTabsDiv.innerHTML = `<h1 style="margin-bottom: 0em;">Re-Open tabs in normal window</h1>`;
+  reopenTabsDiv.appendChild(reopenWindowBtn);
+  reopenTabsDiv.appendChild(reopenSelectedBtn);
+  reopenTabsDiv.innerHTML += `<hr />`;
+
+  document.body.appendChild(reopenTabsDiv);
 }
 
 // Error popup UI
