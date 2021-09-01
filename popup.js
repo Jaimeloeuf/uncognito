@@ -85,7 +85,7 @@ function reopenIncognitoTabsDiv() {
     }
   };
 
-  /* Div to group the buttons for reopening tabs */
+  /* Div to group everything together to return as a single element */
   const div = document.createElement("div");
   div.innerHTML = `<h1 style="margin-bottom: 0em;">Re-Open tabs in normal window</h1>`;
   div.appendChild(reopenWindowBtn);
@@ -102,15 +102,32 @@ function reopenIncognitoTabsDiv() {
 function linksManipulationDiv() {
   /* Button to copy links of all tabs in window */
   const copyAllLinksBtn = document.createElement("button");
-  copyAllLinksBtn.innerHTML = "Copy links of <b>selected tabs only</b>";
-  copyAllLinksBtn.style = "background-color: rgb(253, 222, 227)";
+  copyAllLinksBtn.innerHTML = "<b>All tabs</b> in current window";
+  copyAllLinksBtn.style = "background-color: rgb(220, 220, 220)";
   copyAllLinksBtn.onclick = async function () {
+    // Instead of currentWindow, windowId can be used too, but this just simplifies the readability of the API usage
+    const tabs = await chrome.tabs.query({ currentWindow: true });
+
+    // Extract out only the URLs of the tab(s) array
+    const tabURLs = tabs.map((tab) => tab.url);
+
+    await navigator.clipboard.writeText(tabURLs.join("\n"));
+
+    // @todo Might close the tabs too? Have a setting, set in options.html
+    // @todo Close the popup
+  };
+
+  /* Button to copy links of all tabs in window */
+  const copySelectedLinksBtn = document.createElement("button");
+  copySelectedLinksBtn.innerHTML = "<b>Selected</b> tabs only";
+  copySelectedLinksBtn.style = "background-color: rgb(253, 222, 227)";
+  copySelectedLinksBtn.onclick = async function () {
     const tabs = await chrome.tabs.query({
       // Instead of currentWindow, windowId can be used too, but this just simplifies the readability of the API usage
       currentWindow: true,
 
       // Only get the tabs that are selected by user
-      // highlighted: true,
+      highlighted: true,
     });
 
     // Extract out only the URLs of the tab(s) array
@@ -118,6 +135,7 @@ function linksManipulationDiv() {
 
     await navigator.clipboard.writeText(tabURLs.join("\n"));
 
+    // @todo Might close the tabs too? Have a setting, set in options.html
     // @todo Close the popup
   };
 
@@ -144,10 +162,14 @@ function linksManipulationDiv() {
     });
   };
 
-  /* Div to group the buttons for tab links */
+  /* Div to group everything together to return as a single element */
   const div = document.createElement("div");
   div.innerHTML = `<h1 style="margin-bottom: 0em;">Manipulating tab URLs</h1>`;
+  div.innerHTML += `<h2 style="margin-bottom: 0em; color: grey;">Copy links</h2>`;
   div.appendChild(copyAllLinksBtn);
+  div.appendChild(copySelectedLinksBtn);
+
+  // @todo Put this on the same line
   div.appendChild(reopenLinksInput);
   div.appendChild(reopenLinksBtn);
 
