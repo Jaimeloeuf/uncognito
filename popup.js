@@ -1,11 +1,11 @@
 // Normal popup UI when current window is NOT a incognito window
-function mountNotIncognitoPopup() {
-  const notIncognitoWindowNotice = document.createElement("h2");
-  notIncognitoWindowNotice.innerHTML =
-    "Uncognito extension only works in incognito mode. The current window is <b>NOT</b> in incognito mode.";
-  notIncognitoWindowNotice.style = "color: rgb(255, 84, 84)";
+function notIncognitoWindowNotice() {
+  const el = document.createElement("div");
+  el.innerHTML =
+    `<h1 style="margin-bottom: 0em;">Re-Open tabs in normal window</h1>` +
+    `<h2 style="color: rgb(255, 84, 84)">You can only re-open tabs of a incognito window</h2><hr />`;
 
-  document.body.appendChild(notIncognitoWindowNotice);
+  return el;
 }
 
 // Function to create and return HTML Div element of the `link reopening section`
@@ -195,7 +195,11 @@ chrome.extension.isAllowedIncognitoAccess(async (isAllowed) => {
     // Get current window to check if it is a incognito window
     const { incognito } = await chrome.windows.getCurrent();
 
-    document.body.appendChild(reopenIncognitoTabsDiv());
+    /* Mount different UIs depending on whether current window is incognito or not */
+    if (incognito) document.body.appendChild(reopenIncognitoTabsDiv());
+    else document.body.appendChild(notIncognitoWindowNotice());
+
+    // Links manipulation div is always mounted as user can use it in all types on windows
     document.body.appendChild(linksManipulationDiv());
   } else {
     document.body.appendChild(errorPopup());
