@@ -90,7 +90,10 @@ function reopenIncognitoTabsDiv() {
   div.innerHTML = `<h1 style="margin-bottom: 0em;">Re-Open tabs in normal window</h1>`;
   div.appendChild(reopenWindowBtn);
   div.appendChild(reopenSelectedBtn);
-  div.innerHTML += `<hr />`;
+  // div.innerHTML += `<hr />`;
+  // Must use insert Adjacent HTML instead of just doing a string concat because,
+  // https://stackoverflow.com/questions/5113105/manipulating-innerhtml-removes-the-event-handler-of-a-child-element
+  div.insertAdjacentHTML("beforeend", "<hr />");
 
   return div;
 }
@@ -99,8 +102,7 @@ function reopenIncognitoTabsDiv() {
 function linksManipulationDiv() {
   /* Button to copy links of all tabs in window */
   const copyAllLinksBtn = document.createElement("button");
-  copyAllLinksBtn.innerHTML =
-    "Copy all links <b>selected tabs only</b> in normal window";
+  copyAllLinksBtn.innerHTML = "Copy links of <b>selected tabs only</b>";
   copyAllLinksBtn.style = "background-color: rgb(253, 222, 227)";
   copyAllLinksBtn.onclick = async function () {
     const tabs = await chrome.tabs.query({
