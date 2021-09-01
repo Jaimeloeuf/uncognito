@@ -85,6 +85,51 @@ function mountIncognitoPopup() {
     }
   };
 
+  /* Button to copy links of all tabs in window */
+  const copyAllLinksBtn = document.createElement("button");
+  copyAllLinksBtn.innerHTML =
+    "Copy all links <b>selected tabs only</b> in normal window";
+  copyAllLinksBtn.style = "background-color: rgb(253, 222, 227)";
+  copyAllLinksBtn.onclick = async function () {
+    const tabs = await chrome.tabs.query({
+      // Instead of currentWindow, windowId can be used too, but this just simplifies the readability of the API usage
+      currentWindow: true,
+
+      // Only get the tabs that are selected by user
+      // highlighted: true,
+    });
+
+    // Extract out only the URLs of the tab(s) array
+    const tabURLs = tabs.map((tab) => tab.url);
+
+    await navigator.clipboard.writeText(tabURLs.join("\n"));
+
+    // @todo Close the popup
+  };
+
+  /* textarea for user to paste in their links */
+  const reopenLinksInput = document.createElement("textarea");
+  reopenLinksInput.id = "reopenLinksInput";
+
+  /* Button to read the links in textarea and create a new window with it */
+  const reopenLinksBtn = document.createElement("button");
+  reopenLinksBtn.innerHTML = "Re-open links";
+  reopenLinksBtn.style = "background-color: rgb(253, 222, 227)";
+  reopenLinksBtn.onclick = function () {
+    // Create new window
+    chrome.windows.create({
+      // Opens a normal active window
+      focused: true,
+      type: "normal",
+
+      // Open in a normal window
+      incognito: false,
+
+      // URLs of the tab(s) should be seperated by newlines
+      url: document.getElementById("reopenLinksInput").value.split("\n"),
+    });
+  };
+
   /* Div to group the buttons for reopening tabs */
   const reopenTabsDiv = document.createElement("div");
   reopenTabsDiv.innerHTML = `<h1 style="margin-bottom: 0em;">Re-Open tabs in normal window</h1>`;
@@ -92,7 +137,15 @@ function mountIncognitoPopup() {
   reopenTabsDiv.appendChild(reopenSelectedBtn);
   reopenTabsDiv.innerHTML += `<hr />`;
 
+  /* Div to group the buttons for tab links */
+  const linksAsTextDiv = document.createElement("div");
+  linksAsTextDiv.innerHTML = `<h1 style="margin-bottom: 0em;">Manipulating tab URLs</h1>`;
+  linksAsTextDiv.appendChild(copyAllLinksBtn);
+  linksAsTextDiv.appendChild(reopenLinksInput);
+  linksAsTextDiv.appendChild(reopenLinksBtn);
+
   document.body.appendChild(reopenTabsDiv);
+  document.body.appendChild(linksAsTextDiv);
 }
 
 // Error popup UI
