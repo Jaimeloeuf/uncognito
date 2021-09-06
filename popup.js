@@ -169,6 +169,11 @@ function linksManipulationDiv() {
   div.appendChild(copyAllLinksBtn);
   div.appendChild(copySelectedLinksBtn);
 
+  const reopenDivider = document.createElement("h2");
+  reopenDivider.innerHTML = "Open links";
+  reopenDivider.style = "margin-bottom: 0em; color: grey;";
+  div.appendChild(reopenDivider);
+
   // @todo Put this on the same line
   div.appendChild(reopenLinksInput);
   div.appendChild(reopenLinksBtn);
