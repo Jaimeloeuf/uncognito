@@ -147,15 +147,18 @@ function linksManipulationDiv() {
   const reopenLinksBtn = document.createElement("button");
   reopenLinksBtn.innerHTML = "Re-open links";
   reopenLinksBtn.style = "background-color: rgb(253, 222, 227)";
-  reopenLinksBtn.onclick = function () {
+  reopenLinksBtn.onclick = async function () {
+    // Check if current window is incognito
+    const { incognito } = await chrome.windows.getCurrent();
+
     // Create new window
     chrome.windows.create({
       // Opens a normal active window
       focused: true,
       type: "normal",
 
-      // Open in a normal window
-      incognito: false,
+      // Open in the same type of window as the current window
+      incognito,
 
       // URLs of the tab(s) should be seperated by newlines
       url: document.getElementById("reopenLinksInput").value.split("\n"),
