@@ -147,18 +147,62 @@ function linksManipulationDiv() {
     // Check if current window is incognito
     const { incognito } = await chrome.windows.getCurrent();
 
-    // Create new window
-    chrome.windows.create({
+    // Refer to these
+    // https://chrome.google.com/webstore/detail/tab-groups-extension/nplimhmoanghlebhdiboeellhgmgommi?hl=en
+    // https://developer.chrome.com/docs/extensions/reference/tabGroups/#method-get
+
+    const inputValue = document.getElementById("reopenLinksInput").value;
+    const json = isJSON(inputValue);
+
+    if (json) {
       // Opens a normal active window
-      focused: true,
-      type: "normal",
+      const { id: windowId } = await createWindow({
+        focused: true,
+        type: "normal",
+        // state: "maximized",
 
-      // Open in the same type of window as the current window
-      incognito,
+        // Open in the same type of window as the current window
+        incognito,
+      });
 
-      // URLs of the tab(s) should be seperated by newlines
-      url: document.getElementById("reopenLinksInput").value.split("\n"),
-    });
+      console.log("windowId", windowId);
+
+      const noGroup = json["-1"];
+      delete json["-1"];
+
+      for (const groupID in json) {
+        const group = json[groupID];
+
+        const tabIds = await Promise.all(
+          group.tabs.map((url) =>
+            createTab({ windowId, url }).then(({ id }) => id)
+          )
+        );
+
+        const new_groupID = await chrome.tabs.group({ tabIds });
+
+        chrome.tabGroups.update(new_groupID, {
+          collapsed: group.name.collapsed,
+          color: group.name.color,
+          title: group.name.title,
+        });
+      }
+
+      noGroup.tabs.map((url) => createTab({ windowId, url }));
+    } else {
+      // Opens a normal active window
+      chrome.windows.create({
+        focused: true,
+        type: "normal",
+        // state: "maximized",
+
+        // Open in the same type of window as the current window
+        incognito,
+
+        // URLs of the tab(s) should be seperated by newlines
+        url: inputValue.split("\n"),
+      });
+    }
   };
 
   /* Div to group everything together to return as a single element */
