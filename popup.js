@@ -20,7 +20,6 @@ function reopenIncognitoTabsDiv() {
 
     // Only reopen the tabs in new window if the current window is a incognito window
     if (incognito) {
-      // Instead of currentWindow, windowId can be used too, but this just simplifies the readability of the API usage
       const tabs = await chrome.tabs.query({ currentWindow: true });
 
       // Extract out only the URLs of the tab(s) array
@@ -56,7 +55,6 @@ function reopenIncognitoTabsDiv() {
     // Only reopen the tabs in new window if the current window is a incognito window
     if (incognito) {
       const tabs = await chrome.tabs.query({
-        // Instead of currentWindow, windowId can be used too, but this just simplifies the readability of the API usage
         currentWindow: true,
 
         // Only get the tabs that are selected by user
@@ -105,7 +103,6 @@ function linksManipulationDiv() {
   copyAllLinksBtn.innerHTML = "<b>All tabs</b> in current window";
   copyAllLinksBtn.style = "background-color: rgb(220, 220, 220)";
   copyAllLinksBtn.onclick = async function () {
-    // Instead of currentWindow, windowId can be used too, but this just simplifies the readability of the API usage
     const tabs = await chrome.tabs.query({ currentWindow: true });
 
     // Extract out only the URLs of the tab(s) array
@@ -123,7 +120,6 @@ function linksManipulationDiv() {
   copySelectedLinksBtn.style = "background-color: rgb(253, 222, 227)";
   copySelectedLinksBtn.onclick = async function () {
     const tabs = await chrome.tabs.query({
-      // Instead of currentWindow, windowId can be used too, but this just simplifies the readability of the API usage
       currentWindow: true,
 
       // Only get the tabs that are selected by user
