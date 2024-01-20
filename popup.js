@@ -96,6 +96,14 @@ function reopenIncognitoTabsDiv() {
   return div;
 }
 
+const isJSON = (value) => {
+  try {
+    return JSON.parse(value);
+  } catch (error) {
+    return false;
+  }
+};
+
 // Function to create and return HTML Div element of the `link manipulation section`
 function linksManipulationDiv() {
   /* Button to copy links of all tabs in window */
