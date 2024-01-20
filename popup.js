@@ -205,6 +205,16 @@ function linksManipulationDiv() {
     }
   };
 
+  /* Button to read the links in textarea and create a new window with it */
+  const reopenLinksInSameWindowBtn = document.createElement("button");
+  reopenLinksInSameWindowBtn.innerHTML = "In same window";
+  reopenLinksInSameWindowBtn.style = "background-color: rgb(220, 220, 220)";
+  reopenLinksInSameWindowBtn.onclick = async function () {
+    chrome.tabs.create({
+      url: document.getElementById("reopenLinksInput").value.split("\n")[0],
+    });
+  };
+
   /* Div to group everything together to return as a single element */
   const div = document.createElement("div");
   div.innerHTML = `<h1 style="margin-bottom: 0em;">Manipulating tab URLs</h1>`;
@@ -212,14 +222,11 @@ function linksManipulationDiv() {
   div.appendChild(copyAllLinksBtn);
   div.appendChild(copySelectedLinksBtn);
 
-  const reopenDivider = document.createElement("h2");
-  reopenDivider.innerHTML = "Open links";
-  reopenDivider.style = "margin-bottom: 0em; color: grey;";
   div.appendChild(reopenDivider);
-
   // @todo Put this on the same line
   div.appendChild(reopenLinksInput);
   div.appendChild(reopenLinksBtn);
+  div.appendChild(reopenLinksInSameWindowBtn);
 
   return div;
 }
