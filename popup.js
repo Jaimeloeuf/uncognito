@@ -143,6 +143,11 @@ function linksManipulationDiv() {
     // @todo Close the popup
   };
 
+  /* Divider between copy links buttons and the reopen links section */
+  const reopenDivider = document.createElement("h2");
+  reopenDivider.innerHTML = "Open links";
+  reopenDivider.style = "margin-bottom: 0em; color: grey;";
+
   /* textarea for user to paste in their links */
   const reopenLinksInput = document.createElement("textarea");
   reopenLinksInput.id = "reopenLinksInput";
@@ -231,7 +236,6 @@ function linksManipulationDiv() {
   div.appendChild(copySelectedLinksBtn);
 
   div.appendChild(reopenDivider);
-  // @todo Put this on the same line
   div.appendChild(reopenLinksInput);
   div.appendChild(reopenLinksBtn);
   div.appendChild(reopenLinksInSameWindowBtn);
