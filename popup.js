@@ -12,7 +12,7 @@ function notIncognitoWindowNotice() {
 function reopenIncognitoTabsDiv() {
   /* Button for re-opening entire incognito window */
   const reopenWindowBtn = document.createElement("button");
-  reopenWindowBtn.innerHTML = "<b>All tabs</b> in current window";
+  reopenWindowBtn.innerHTML = "Current window";
   reopenWindowBtn.style = "background-color: rgb(220, 220, 220)";
   reopenWindowBtn.onclick = async function () {
     // Get current window to check if it is a incognito window
@@ -46,7 +46,7 @@ function reopenIncognitoTabsDiv() {
 
   /* Button for re-opening selected tabs only */
   const reopenSelectedBtn = document.createElement("button");
-  reopenSelectedBtn.innerHTML = "<b>Selected</b> tabs only";
+  reopenSelectedBtn.innerHTML = "Selected tabs only";
   reopenSelectedBtn.style = "background-color: rgb(253, 222, 227)";
   reopenSelectedBtn.onclick = async function () {
     // Get current window to check if it is a incognito window
@@ -83,11 +83,18 @@ function reopenIncognitoTabsDiv() {
     }
   };
 
+  const buttonDiv = document.createElement("div");
+  buttonDiv.style.display = "flex";
+  buttonDiv.style.flexDirection = "row";
+  buttonDiv.style.justifyContent = "space-between";
+  buttonDiv.style.gap = "1rem";
+  buttonDiv.appendChild(reopenWindowBtn);
+  buttonDiv.appendChild(reopenSelectedBtn);
+
   /* Div to group everything together to return as a single element */
   const div = document.createElement("div");
   div.innerHTML = `<h1 style="margin-bottom: 0em;">Re-Open tabs in normal window</h1>`;
-  div.appendChild(reopenWindowBtn);
-  div.appendChild(reopenSelectedBtn);
+  div.appendChild(buttonDiv);
   // div.innerHTML += `<hr />`;
   // Must use insert Adjacent HTML instead of just doing a string concat because,
   // https://stackoverflow.com/questions/5113105/manipulating-innerhtml-removes-the-event-handler-of-a-child-element
