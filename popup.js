@@ -277,12 +277,11 @@ function errorPopup() {
 
 // Check if extension have access to incognito windows/tabs and mount a specific popup UI
 chrome.extension.isAllowedIncognitoAccess(async (isAllowed) => {
-  if (isAllowed) {
-    document.body.appendChild(reopenTabsDiv());
-
-    // Links manipulation div is always mounted as user can use it in all types on windows
-    document.body.appendChild(linksManipulationDiv());
-  } else {
+  if (!isAllowed) {
     document.body.appendChild(errorPopup());
+    return;
   }
+
+  document.body.appendChild(reopenTabsDiv());
+  document.body.appendChild(linksManipulationDiv());
 });
