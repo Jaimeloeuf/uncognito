@@ -1,12 +1,12 @@
 // Function to create and return HTML Div element of the `link reopening section`
-function reopenTabsDiv() {
+function reopenTabsDiv(incognito) {
   /* Button for re-opening entire incognito window */
   const reopenWindowBtn = document.createElement("button");
   reopenWindowBtn.innerHTML = "Current window";
   reopenWindowBtn.style = "background-color: rgb(220, 220, 220)";
   reopenWindowBtn.onclick = async function () {
     // Get current window to check if it is a incognito window
-    const { id, incognito } = await chrome.windows.getCurrent();
+    const { id } = await chrome.windows.getCurrent();
 
     // Only reopen the tabs in new window if the current window is a incognito window
     if (incognito) {
@@ -39,9 +39,6 @@ function reopenTabsDiv() {
   reopenSelectedBtn.innerHTML = "Selected tabs only";
   reopenSelectedBtn.style = "background-color: rgb(253, 222, 227)";
   reopenSelectedBtn.onclick = async function () {
-    // Get current window to check if it is a incognito window
-    const { incognito } = await chrome.windows.getCurrent();
-
     // Only reopen the tabs in new window if the current window is a incognito window
     if (incognito) {
       const tabs = await chrome.tabs.query({
@@ -83,7 +80,9 @@ function reopenTabsDiv() {
 
   /* Div to group everything together to return as a single element */
   const div = document.createElement("div");
-  div.innerHTML = `<h1 style="margin-bottom: 0em;">Re-Open tabs in normal window</h1>`;
+  div.innerHTML = `<h1 style="margin-bottom: 0em;">Re-Open tabs in ${
+    incognito ? "normal" : "incognito"
+  } window</h1>`;
   div.appendChild(buttonDiv);
   // div.innerHTML += `<hr />`;
   // Must use insert Adjacent HTML instead of just doing a string concat because,
@@ -282,6 +281,8 @@ chrome.extension.isAllowedIncognitoAccess(async (isAllowed) => {
     return;
   }
 
-  document.body.appendChild(reopenTabsDiv());
+  // Get current window's incognito status
+  const { incognito } = await chrome.windows.getCurrent();
+  document.body.appendChild(reopenTabsDiv(incognito));
   document.body.appendChild(linksManipulationDiv());
 });
