@@ -184,7 +184,7 @@ function linksManipulationDiv() {
 
         const tabIds = await Promise.all(
           group.tabs.map((url) =>
-            createTab({ windowId, url }).then(({ id }) => id)
+            chrome.tabs.create({ windowId, url }).then(({ id }) => id)
           )
         );
 
@@ -197,7 +197,7 @@ function linksManipulationDiv() {
         });
       }
 
-      noGroup.tabs.map((url) => createTab({ windowId, url }));
+      noGroup.tabs.map((url) => chrome.tabs.create({ windowId, url }));
     } else {
       // Opens a normal active window
       chrome.windows.create({
