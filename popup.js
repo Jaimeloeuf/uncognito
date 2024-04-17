@@ -165,7 +165,7 @@ function linksManipulationDiv() {
 
     if (json) {
       // Opens a normal active window
-      const { id: windowId } = await createWindow({
+      const { id: windowId } = await chrome.windows.create({
         focused: true,
         type: "normal",
         // state: "maximized",
