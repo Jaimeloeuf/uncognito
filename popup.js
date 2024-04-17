@@ -8,30 +8,25 @@ function reopenTabsDiv(incognito) {
     // Get current window to check if it is a incognito window
     const { id } = await chrome.windows.getCurrent();
 
-    // Only reopen the tabs in new window if the current window is a incognito window
-    if (incognito) {
-      const tabs = await chrome.tabs.query({ currentWindow: true });
+    const tabs = await chrome.tabs.query({ currentWindow: true });
 
-      // Extract out only the URLs of the tab(s) array
-      const tabURLs = tabs.map((tab) => tab.url);
+    // Extract out only the URLs of the tab(s) array
+    const tabURLs = tabs.map((tab) => tab.url);
 
-      // Await for new window to be created first before closing the incognito window
-      await chrome.windows.create({
-        // Opens a normal active window
-        focused: true,
-        type: "normal",
+    // Await for new window to be created first before closing the incognito window
+    await chrome.windows.create({
+      // Opens a normal active window
+      focused: true,
+      type: "normal",
+      incognito: !incognito,
 
-        // Open in a normal window
-        incognito: false,
+      // Have to use URL instead of tab IDs because tabs can only be moved between windows of the same profile
+      // i.e incognito tabs can only be moved to another incognito window
+      url: tabURLs,
+    });
 
-        // Have to use URL instead of tab IDs because tabs can only be moved between windows of the same profile
-        // i.e incognito tabs can only be moved to another incognito window
-        url: tabURLs,
-      });
-
-      // Close the entire incognito window and all tabs in it once the new window is created
-      await chrome.windows.remove(id);
-    }
+    // Close the entire incognito window and all tabs in it once the new window is created
+    await chrome.windows.remove(id);
   };
 
   /* Button for re-opening selected tabs only */
@@ -39,35 +34,28 @@ function reopenTabsDiv(incognito) {
   reopenSelectedBtn.innerHTML = "Selected tabs only";
   reopenSelectedBtn.style = "background-color: rgb(253, 222, 227)";
   reopenSelectedBtn.onclick = async function () {
-    // Only reopen the tabs in new window if the current window is a incognito window
-    if (incognito) {
-      const tabs = await chrome.tabs.query({
-        currentWindow: true,
+    // Only get the tabs that are selected by user
+    const tabs = await chrome.tabs.query({
+      currentWindow: true,
+      highlighted: true,
+    });
 
-        // Only get the tabs that are selected by user
-        highlighted: true,
-      });
+    // Extract out only the URLs of the tab(s) array
+    const tabURLs = tabs.map((tab) => tab.url);
 
-      // Extract out only the URLs of the tab(s) array
-      const tabURLs = tabs.map((tab) => tab.url);
+    // Await for new window to be created first before the original tabs
+    await chrome.windows.create({
+      focused: true,
+      type: "normal",
+      incognito: !incognito,
 
-      // Await for new window to be created first before closing the incognito window
-      await chrome.windows.create({
-        // Opens a normal active window
-        focused: true,
-        type: "normal",
+      // Have to use URL instead of tab IDs because tabs can only be moved between windows of the same profile
+      // i.e incognito tabs can only be moved to another incognito window
+      url: tabURLs,
+    });
 
-        // Open in a normal window
-        incognito: false,
-
-        // Have to use URL instead of tab IDs because tabs can only be moved between windows of the same profile
-        // i.e incognito tabs can only be moved to another incognito window
-        url: tabURLs,
-      });
-
-      // Only close the selected tabs once the new window is created
-      await chrome.tabs.remove(tabs.map((tab) => tab.id));
-    }
+    // Only close the selected tabs once the new window is created
+    await chrome.tabs.remove(tabs.map((tab) => tab.id));
   };
 
   const buttonDiv = document.createElement("div");
