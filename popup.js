@@ -97,10 +97,22 @@ function linksManipulationDiv() {
   copyAllLinksBtn.onclick = async function () {
     const tabs = await chrome.tabs.query({ currentWindow: true });
 
-    // Extract out only the URLs of the tab(s) array
-    const tabURLs = tabs.map((tab) => tab.url);
+    const groups = {};
+    for (const tab of tabs) {
+      if (!groups[tab.groupId]) {
+        groups[tab.groupId] = {
+          tabs: [],
+        };
 
-    await navigator.clipboard.writeText(tabURLs.join("\n"));
+        // Only insert group name if it is in a group, as no group means groupID of -1
+        if (tab.groupId > 0) {
+          groups[tab.groupId].name = await chrome.tabGroups.get(tab.groupId);
+        }
+      }
+
+      groups[tab.groupId].tabs.push(tab.url);
+    }
+    await navigator.clipboard.writeText(JSON.stringify(groups));
 
     // @todo Might close the tabs too? Have a setting, set in options.html
     // @todo Close the popup
