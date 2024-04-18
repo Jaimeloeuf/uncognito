@@ -115,7 +115,9 @@ function linksManipulationDiv() {
     await navigator.clipboard.writeText(JSON.stringify(groups));
 
     // @todo Might close the tabs too? Have a setting, set in options.html
-    // @todo Close the popup
+
+    // Close the popup
+    window.close();
   };
 
   /* Button to copy links of all tabs in window */
@@ -136,7 +138,9 @@ function linksManipulationDiv() {
     await navigator.clipboard.writeText(tabURLs.join("\n"));
 
     // @todo Might close the tabs too? Have a setting, set in options.html
-    // @todo Close the popup
+
+    // Close the popup
+    window.close();
   };
 
   /* Divider between copy links buttons and the reopen links section */
