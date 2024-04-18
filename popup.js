@@ -151,6 +151,9 @@ function linksManipulationDiv() {
   /* textarea for user to paste in their links */
   const reopenLinksInput = document.createElement("textarea");
   reopenLinksInput.id = "reopenLinksInput";
+  reopenLinksInput.style.resize = "none";
+  reopenLinksInput.style.width = "99%";
+  reopenLinksInput.style.height = "4rem";
 
   /* Button to read the links in textarea and create a new window with it */
   const reopenLinksBtn = document.createElement("button");
