@@ -92,7 +92,7 @@ const isJSON = (value) => {
 function linksManipulationDiv() {
   /* Button to copy links of all tabs in window */
   const copyAllLinksBtn = document.createElement("button");
-  copyAllLinksBtn.innerHTML = "<b>All tabs</b> in current window";
+  copyAllLinksBtn.innerHTML = "All tabs in current window";
   copyAllLinksBtn.style = "background-color: rgb(220, 220, 220)";
   copyAllLinksBtn.onclick = async function () {
     const tabs = await chrome.tabs.query({ currentWindow: true });
@@ -122,7 +122,7 @@ function linksManipulationDiv() {
 
   /* Button to copy links of all tabs in window */
   const copySelectedLinksBtn = document.createElement("button");
-  copySelectedLinksBtn.innerHTML = "<b>Selected</b> tabs only";
+  copySelectedLinksBtn.innerHTML = "Selected tabs only";
   copySelectedLinksBtn.style = "background-color: rgb(253, 222, 227)";
   copySelectedLinksBtn.onclick = async function () {
     const tabs = await chrome.tabs.query({
@@ -231,12 +231,19 @@ function linksManipulationDiv() {
     });
   };
 
+  const buttonDiv = document.createElement("div");
+  buttonDiv.style.display = "flex";
+  buttonDiv.style.flexDirection = "row";
+  buttonDiv.style.justifyContent = "space-between";
+  buttonDiv.style.gap = "1rem";
+  buttonDiv.appendChild(copyAllLinksBtn);
+  buttonDiv.appendChild(copySelectedLinksBtn);
+
   /* Div to group everything together to return as a single element */
   const div = document.createElement("div");
   div.innerHTML = `<h1 style="margin-bottom: 0em;">Manipulating tab URLs</h1>`;
   div.innerHTML += `<h2 style="margin-bottom: 0em; color: grey;">Copy links</h2>`;
-  div.appendChild(copyAllLinksBtn);
-  div.appendChild(copySelectedLinksBtn);
+  div.appendChild(buttonDiv);
 
   div.appendChild(reopenDivider);
   div.appendChild(reopenLinksInput);
