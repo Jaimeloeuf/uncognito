@@ -245,8 +245,7 @@ function linksManipulationDiv() {
 
   div.appendChild(reopenDivider);
   div.appendChild(reopenLinksInput);
-  div.appendChild(reopenLinksBtn);
-  div.appendChild(reopenLinksInSameWindowBtn);
+  div.appendChild(createFlexRowDiv(reopenLinksBtn, reopenLinksInSameWindowBtn));
 
   return div;
 }
