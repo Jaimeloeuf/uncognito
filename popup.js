@@ -1,3 +1,17 @@
+function createFlexRowDiv(...childNodes) {
+  const flexRowDiv = document.createElement("div");
+  flexRowDiv.style.display = "flex";
+  flexRowDiv.style.flexDirection = "row";
+  flexRowDiv.style.justifyContent = "space-between";
+  flexRowDiv.style.gap = "1rem";
+
+  for (const childNode of childNodes) {
+    flexRowDiv.appendChild(childNode);
+  }
+
+  return flexRowDiv;
+}
+
 // Function to create and return HTML Div element of the `link reopening section`
 function reopenTabsDiv(incognito) {
   /* Button for re-opening entire incognito window */
@@ -58,20 +72,12 @@ function reopenTabsDiv(incognito) {
     await chrome.tabs.remove(tabs.map((tab) => tab.id));
   };
 
-  const buttonDiv = document.createElement("div");
-  buttonDiv.style.display = "flex";
-  buttonDiv.style.flexDirection = "row";
-  buttonDiv.style.justifyContent = "space-between";
-  buttonDiv.style.gap = "1rem";
-  buttonDiv.appendChild(reopenWindowBtn);
-  buttonDiv.appendChild(reopenSelectedBtn);
-
   /* Div to group everything together to return as a single element */
   const div = document.createElement("div");
   div.innerHTML = `<h1 style="margin-bottom: 0em;">Re-Open tabs in ${
     incognito ? "normal" : "incognito"
   } window</h1>`;
-  div.appendChild(buttonDiv);
+  div.appendChild(createFlexRowDiv(reopenWindowBtn, reopenSelectedBtn));
   // div.innerHTML += `<hr />`;
   // Must use insert Adjacent HTML instead of just doing a string concat because,
   // https://stackoverflow.com/questions/5113105/manipulating-innerhtml-removes-the-event-handler-of-a-child-element
@@ -231,19 +237,11 @@ function linksManipulationDiv() {
     });
   };
 
-  const buttonDiv = document.createElement("div");
-  buttonDiv.style.display = "flex";
-  buttonDiv.style.flexDirection = "row";
-  buttonDiv.style.justifyContent = "space-between";
-  buttonDiv.style.gap = "1rem";
-  buttonDiv.appendChild(copyAllLinksBtn);
-  buttonDiv.appendChild(copySelectedLinksBtn);
-
   /* Div to group everything together to return as a single element */
   const div = document.createElement("div");
   div.innerHTML = `<h1 style="margin-bottom: 0em;">Manipulating tab URLs</h1>`;
   div.innerHTML += `<h2 style="margin-bottom: 0em; color: grey;">Copy links</h2>`;
-  div.appendChild(buttonDiv);
+  div.appendChild(createFlexRowDiv(copyAllLinksBtn, copySelectedLinksBtn));
 
   div.appendChild(reopenDivider);
   div.appendChild(reopenLinksInput);
