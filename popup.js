@@ -151,7 +151,7 @@ function linksManipulationDiv() {
 
   /* Divider between copy links buttons and the reopen links section */
   const reopenDivider = document.createElement("h2");
-  reopenDivider.innerHTML = "Open links";
+  reopenDivider.innerHTML = "Re-Open links";
   reopenDivider.style = "margin-bottom: 0em; color: grey;";
 
   /* textarea for user to paste in their links */
@@ -162,10 +162,10 @@ function linksManipulationDiv() {
   reopenLinksInput.style.height = "4rem";
 
   /* Button to read the links in textarea and create a new window with it */
-  const reopenLinksBtn = document.createElement("button");
-  reopenLinksBtn.innerHTML = "Re-open links";
-  reopenLinksBtn.style = "background-color: rgb(253, 222, 227)";
-  reopenLinksBtn.onclick = async function () {
+  const reopenLinksInNewWindowBtn = document.createElement("button");
+  reopenLinksInNewWindowBtn.innerHTML = "In new window";
+  reopenLinksInNewWindowBtn.style = "background-color: rgb(253, 222, 227)";
+  reopenLinksInNewWindowBtn.onclick = async function () {
     // Check if current window is incognito
     const { incognito } = await chrome.windows.getCurrent();
 
@@ -245,7 +245,9 @@ function linksManipulationDiv() {
 
   div.appendChild(reopenDivider);
   div.appendChild(reopenLinksInput);
-  div.appendChild(createFlexRowDiv(reopenLinksBtn, reopenLinksInSameWindowBtn));
+  div.appendChild(
+    createFlexRowDiv(reopenLinksInSameWindowBtn, reopenLinksInNewWindowBtn)
+  );
 
   return div;
 }
