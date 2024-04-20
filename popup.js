@@ -1,16 +1,4 @@
-function createFlexRowDiv(...childNodes) {
-  const flexRowDiv = document.createElement("div");
-  flexRowDiv.style.display = "flex";
-  flexRowDiv.style.flexDirection = "row";
-  flexRowDiv.style.justifyContent = "space-between";
-  flexRowDiv.style.gap = "1rem";
-
-  for (const childNode of childNodes) {
-    flexRowDiv.appendChild(childNode);
-  }
-
-  return flexRowDiv;
-}
+import { createFlexRowDiv } from "./createFlexRowDiv.js";
 
 // Function to create and return HTML Div element of the `link reopening section`
 function reopenTabsDiv(incognito) {
