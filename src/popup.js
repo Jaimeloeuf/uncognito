@@ -1,4 +1,5 @@
 import { createFlexRowDiv } from "./createFlexRowDiv.js";
+import { isJSON } from "./isJSON.js";
 
 // Function to create and return HTML Div element of the `link reopening section`
 function reopenTabsDiv(incognito) {
@@ -73,14 +74,6 @@ function reopenTabsDiv(incognito) {
 
   return div;
 }
-
-const isJSON = (value) => {
-  try {
-    return JSON.parse(value);
-  } catch (error) {
-    return false;
-  }
-};
 
 // Function to create and return HTML Div element of the `link manipulation section`
 function linksManipulationDiv() {
