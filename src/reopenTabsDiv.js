@@ -5,7 +5,7 @@ export function reopenTabsDiv(incognito) {
   /* Button for re-opening entire incognito window */
   const reopenWindowBtn = document.createElement("button");
   reopenWindowBtn.innerHTML = "Current window";
-  reopenWindowBtn.style = "background-color: rgb(220, 220, 220)";
+  reopenWindowBtn.style.backgroundColor = "rgb(220, 220, 220)";
   reopenWindowBtn.onclick = async function () {
     // Get current window to check if it is a incognito window
     const { id } = await chrome.windows.getCurrent();
@@ -34,7 +34,7 @@ export function reopenTabsDiv(incognito) {
   /* Button for re-opening selected tabs only */
   const reopenSelectedBtn = document.createElement("button");
   reopenSelectedBtn.innerHTML = "Selected tabs only";
-  reopenSelectedBtn.style = "background-color: rgb(253, 222, 227)";
+  reopenSelectedBtn.style.backgroundColor = "rgb(253, 222, 227)";
   reopenSelectedBtn.onclick = async function () {
     // Only get the tabs that are selected by user
     const tabs = await chrome.tabs.query({

@@ -6,7 +6,7 @@ export function linksManipulationDiv() {
   /* Button to copy links of all tabs in window */
   const copyAllLinksBtn = document.createElement("button");
   copyAllLinksBtn.innerHTML = "All tabs in current window";
-  copyAllLinksBtn.style = "background-color: rgb(220, 220, 220)";
+  copyAllLinksBtn.style.backgroundColor = "rgb(220, 220, 220)";
   copyAllLinksBtn.onclick = async function () {
     const tabs = await chrome.tabs.query({ currentWindow: true });
 
@@ -35,7 +35,7 @@ export function linksManipulationDiv() {
   /* Button to copy links of all tabs in window */
   const copySelectedLinksBtn = document.createElement("button");
   copySelectedLinksBtn.innerHTML = "Selected tabs only";
-  copySelectedLinksBtn.style = "background-color: rgb(253, 222, 227)";
+  copySelectedLinksBtn.style.backgroundColor = "rgb(253, 222, 227)";
   copySelectedLinksBtn.onclick = async function () {
     const tabs = await chrome.tabs.query({
       currentWindow: true,
@@ -57,7 +57,8 @@ export function linksManipulationDiv() {
   /* Divider between copy links buttons and the reopen links section */
   const reopenDivider = document.createElement("h2");
   reopenDivider.innerHTML = "Re-Open links";
-  reopenDivider.style = "margin-bottom: 0em; color: grey;";
+  reopenDivider.style.marginBottom = "0rem";
+  reopenDivider.style.color = "grey";
 
   /* textarea for user to paste in their links */
   const reopenLinksInput = document.createElement("textarea");
@@ -69,7 +70,7 @@ export function linksManipulationDiv() {
   /* Button to read the links in textarea and create a new window with it */
   const reopenLinksInNewWindowBtn = document.createElement("button");
   reopenLinksInNewWindowBtn.innerHTML = "In new window";
-  reopenLinksInNewWindowBtn.style = "background-color: rgb(253, 222, 227)";
+  reopenLinksInNewWindowBtn.style.backgroundColor = "rgb(253, 222, 227)";
   reopenLinksInNewWindowBtn.onclick = async function () {
     // Check if current window is incognito
     const { incognito } = await chrome.windows.getCurrent();
@@ -132,7 +133,7 @@ export function linksManipulationDiv() {
   /* Button to read the links in textarea and create a new window with it */
   const reopenLinksInSameWindowBtn = document.createElement("button");
   reopenLinksInSameWindowBtn.innerHTML = "In same window";
-  reopenLinksInSameWindowBtn.style = "background-color: rgb(220, 220, 220)";
+  reopenLinksInSameWindowBtn.style.backgroundColor = "rgb(220, 220, 220)";
   reopenLinksInSameWindowBtn.onclick = async function () {
     chrome.tabs.create({
       url: document.getElementById("reopenLinksInput").value.split("\n")[0],

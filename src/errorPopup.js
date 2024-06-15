@@ -3,11 +3,11 @@ export function errorPopup() {
   const noAccessError = document.createElement("h2");
   noAccessError.innerHTML =
     "Please enable incognito access to use extension in extension's settings page";
-  noAccessError.style = "color: rgb(255, 90, 90)";
+  noAccessError.style.color = "rgb(255, 90, 90)";
 
   const buttonToExtensionsPage = document.createElement("button");
   buttonToExtensionsPage.innerHTML = "Extension's settings";
-  buttonToExtensionsPage.style = "background-color: rgb(253, 222, 227);";
+  buttonToExtensionsPage.style.backgroundColor = "rgb(253, 222, 227);";
   buttonToExtensionsPage.onclick = function () {
     chrome.tabs.create({
       // Create tab and focus on it
