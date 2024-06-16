@@ -19,9 +19,10 @@ export function linksManipulationDiv() {
           tabs: [],
         };
 
-        // Only insert group name if it is in a group, as no group means groupID of -1
-        if (tab.groupId > 0) {
-          groups[tab.groupId].name = await chrome.tabGroups.get(tab.groupId);
+        // Only insert group name if it is in a group, no group have -1 groupID
+        if (tab.groupId !== -1) {
+          const { title, color } = await chrome.tabGroups.get(tab.groupId);
+          groups[tab.groupId] = { title, color, ...groups[tab.groupId] };
         }
       }
 
@@ -93,8 +94,6 @@ export function linksManipulationDiv() {
         incognito,
       });
 
-      console.log("windowId", windowId);
-
       const noGroup = json["-1"] ?? [];
       noGroup.tabs.map((url) => chrome.tabs.create({ windowId, url }));
       delete json["-1"];
@@ -108,12 +107,10 @@ export function linksManipulationDiv() {
           )
         );
 
-        const new_groupID = await chrome.tabs.group({ tabIds });
-
-        chrome.tabGroups.update(new_groupID, {
-          collapsed: group.name.collapsed,
-          color: group.name.color,
-          title: group.name.title,
+        const newTabGroupID = await chrome.tabs.group({ tabIds });
+        chrome.tabGroups.update(newTabGroupID, {
+          title: group.title,
+          color: group.color,
         });
       }
     } else {
