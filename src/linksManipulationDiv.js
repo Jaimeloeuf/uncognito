@@ -1,7 +1,9 @@
 import { createFlexRowDiv } from "./createFlexRowDiv.js";
 import { isJSON } from "./isJSON.js";
 
-// Function to create and return HTML Div element of the `link manipulation section`
+/**
+ * Function to create and return HTML Div element of the `link manipulation section`
+ */
 export function linksManipulationDiv() {
   /* Button to copy links of all tabs in window */
   const copyAllLinksBtn = document.createElement("button");

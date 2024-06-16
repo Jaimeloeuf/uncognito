@@ -1,6 +1,8 @@
 import { createFlexRowDiv } from "./createFlexRowDiv.js";
 
-// Function to create and return HTML Div element of the `link reopening section`
+/**
+ * Function to create and return HTML Div element of the `link reopening section`
+ */
 export function reopenTabsDiv(incognito) {
   /* Button for re-opening entire incognito window */
   const reopenWindowBtn = document.createElement("button");

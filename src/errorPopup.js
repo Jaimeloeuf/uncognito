@@ -1,4 +1,6 @@
-// Error popup UI
+/**
+ * Error popup UI
+ */
 export function errorPopup() {
   const noAccessError = document.createElement("h2");
   noAccessError.innerHTML =
