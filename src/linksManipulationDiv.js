@@ -83,17 +83,17 @@ export function linksManipulationDiv() {
     const json = isJSON(inputValue);
 
     if (json) {
+      const urlsWithNoGroup = json["-1"]?.tabs;
+      delete json["-1"];
+
       // Open in the same type of window as the current window
       const { id: windowId } = await chrome.windows.create({
         focused: true,
         type: "normal",
         incognito,
         // state: "maximized",
+        url: urlsWithNoGroup,
       });
-
-      const noGroup = json["-1"] ?? [];
-      noGroup.tabs.forEach((url) => chrome.tabs.create({ windowId, url }));
-      delete json["-1"];
 
       for (const group of Object.values(json)) {
         const tabIds = await Promise.all(
