@@ -15,14 +15,12 @@ export function linksManipulationDiv() {
     const groups = {};
     for (const tab of tabs) {
       if (!groups[tab.groupId]) {
-        groups[tab.groupId] = {
-          tabs: [],
-        };
-
         // Only insert group name if it is in a group, no group have -1 groupID
-        if (tab.groupId !== -1) {
+        if (tab.groupId === -1) {
+          groups[tab.groupId] = { tabs: [] };
+        } else {
           const { title, color } = await chrome.tabGroups.get(tab.groupId);
-          groups[tab.groupId] = { title, color, ...groups[tab.groupId] };
+          groups[tab.groupId] = { title, color, tabs: [] };
         }
       }
 
