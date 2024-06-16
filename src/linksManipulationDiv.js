@@ -95,7 +95,8 @@ export function linksManipulationDiv() {
 
       console.log("windowId", windowId);
 
-      const noGroup = json["-1"];
+      const noGroup = json["-1"] ?? [];
+      noGroup.tabs.map((url) => chrome.tabs.create({ windowId, url }));
       delete json["-1"];
 
       for (const groupID in json) {
@@ -115,8 +116,6 @@ export function linksManipulationDiv() {
           title: group.name.title,
         });
       }
-
-      noGroup.tabs.map((url) => chrome.tabs.create({ windowId, url }));
     } else {
       // Opens a normal active window
       chrome.windows.create({
