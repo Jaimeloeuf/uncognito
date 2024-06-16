@@ -83,29 +83,29 @@ export function linksManipulationDiv() {
     const json = isJSON(inputValue);
 
     if (json) {
-      // Opens a normal active window
+      // Open in the same type of window as the current window
       const { id: windowId } = await chrome.windows.create({
         focused: true,
         type: "normal",
-        // state: "maximized",
-        // Open in the same type of window as the current window
         incognito,
+        // state: "maximized",
       });
 
       const noGroup = json["-1"] ?? [];
-      noGroup.tabs.map((url) => chrome.tabs.create({ windowId, url }));
+      noGroup.tabs.forEach((url) => chrome.tabs.create({ windowId, url }));
       delete json["-1"];
 
-      for (const groupID in json) {
-        const group = json[groupID];
-
+      for (const group of Object.values(json)) {
         const tabIds = await Promise.all(
           group.tabs.map((url) =>
             chrome.tabs.create({ windowId, url }).then(({ id }) => id)
           )
         );
 
-        const newTabGroupID = await chrome.tabs.group({ tabIds });
+        const newTabGroupID = await chrome.tabs.group({
+          createProperties: { windowId },
+          tabIds,
+        });
         chrome.tabGroups.update(newTabGroupID, {
           title: group.title,
           color: group.color,
